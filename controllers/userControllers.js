@@ -99,7 +99,7 @@ const fetchUserProfile = async (req, res) => {
     try {
         const { id } = req.params;
         // const user = await User.findOne({ _id: id });
-        const userPosts = await Post.find({ user: id }).populate('user', 'name profilePic _id')
+        const userPosts = await Post.find({ user: id }).populate('user', 'name profilePic _id').sort({ createdAt: -1 });
         res.status(200).json({
             data: userPosts,
             message: "User fetched successfully",

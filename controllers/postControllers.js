@@ -4,7 +4,7 @@ const Post = require("../models/postModel");
 const fetchPosts = async (req, res) => { 
     console.log("fetching posts")
     try {
-        const posts = await Post.find().populate('user', 'name profilePic _id');
+        const posts = await Post.find().populate('user', 'name profilePic _id').sort({createdAt:-1});
         res.status(200).json({
             data: posts,
             message: "Posts fetched successfully",
