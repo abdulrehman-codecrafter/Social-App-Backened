@@ -166,5 +166,6 @@ module.exports = {
     registerUser,
     loginUser,
     updateProfile,
-    fetchUserProfile
+    fetchUserProfile,
+    fetchUser
 }
