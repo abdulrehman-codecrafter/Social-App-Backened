@@ -101,10 +101,7 @@ const fetchUserProfile = async (req, res) => {
         // const user = await User.findOne({ _id: id });
         const userPosts = await Post.find({ user: id }).populate('user', 'name profilePic _id')
         res.status(200).json({
-            data: {
-                user,
-                userPosts
-            },
+            data: userPosts,
             message: "User fetched successfully",
         });
     }
