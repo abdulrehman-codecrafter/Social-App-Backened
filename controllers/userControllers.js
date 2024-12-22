@@ -1,12 +1,12 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
-const jwt=require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const Post = require('../models/postModel');
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password,profilePic } = req.body;
-        if( !name || !email || !password){
+        const { name, email, password, profilePic } = req.body;
+        if (!name || !email || !password) {
             return res.status(400).json({
                 data: null,
                 message: "Please enter all fields",
@@ -71,12 +71,12 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const token=jwt.sign({_id:existingUser._id,email:existingUser.email},process.env.SECRET_KEY);
+        const token = jwt.sign({ _id: existingUser._id, email: existingUser.email }, process.env.SECRET_KEY);
 
         res.status(200).json({
             data: {
                 user: existingUser,
-                token:token
+                token: token
             },
             message: "User logged in successfully",
         });
@@ -93,51 +93,76 @@ const loginUser = async (req, res) => {
 const fetchUserProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const user=await User.findOne({_id:id});
-        const userPosts=await Post.find({user:id});
+        const user = await User.findOne({ _id: id });
+        const userPosts = await Post.find({ user: id });
         res.status(200).json({
             data: {
                 user,
                 userPosts
             },
-            message: "User fetched successfully",   
+            message: "User fetched successfully",
         });
     }
-    catch(error){
+    catch (error) {
         res.status(409).json({
             data: null,
             message: "Failed to fetch user",
             error: error.message
         });
-    }      
+    }
 }
 
 const updateProfile = async (req, res) => {
-    try{
-        const {name,profilePic}=req.body;
-        if(!name){
+    try {
+        const { name, profilePic } = req.body;
+        if (!name) {
             return res.status(400).json({
                 data: null,
                 message: "Please enter credentials",
             });
         }
-        const {_id}=req.user
-        const user=await User.findOneAndUpdate({_id},{name,profilePic},{new:true});
+        const { _id } = req.user
+        const user = await User.findOneAndUpdate({ _id }, { name, profilePic }, { new: true });
         res.status(200).json({
             data: user,
-            message: "User updated successfully",   
+            message: "User updated successfully",
         });
     }
-    catch(error){
+    catch (error) {
         res.status(409).json({
             data: null,
             message: "Failed to update user",
             error: error.message
         });
-}
+    }
 
 }
-module.exports={
+
+const fetchUser= async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const user = await User.findOne({ _id })
+        res.status(200).json({
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                profilePic: user.profilePic,
+            },
+            message: "User fetched successfully",   
+        }); 
+    }
+
+    catch (error) {
+        res.status(409).json({
+            data: null,
+            message: "Failed to fetch user",
+            error: error.message
+        });
+    }
+
+}
+module.exports = {
     registerUser,
     loginUser,
     updateProfile,

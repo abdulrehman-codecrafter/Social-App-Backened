@@ -7,6 +7,7 @@ const userRouter = express.Router();
 userRouter.post('/register', registerUser);
 userRouter.post('/login', loginUser);
 userRouter.get('/profile/:id', fetchUserProfile);
+userRouter.get('/me',authVerify, fetchUserProfile);
 userRouter.put('/updateProfile',authVerify, updateProfile);
 
 module.exports = userRouter;
