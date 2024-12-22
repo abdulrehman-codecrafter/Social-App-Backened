@@ -98,8 +98,8 @@ const loginUser = async (req, res) => {
 const fetchUserProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findOne({ _id: id });
-        const userPosts = await Post.find({ user: id });
+        // const user = await User.findOne({ _id: id });
+        const userPosts = await Post.find({ user: id }).populate('user', 'name profilePic _id')
         res.status(200).json({
             data: {
                 user,
