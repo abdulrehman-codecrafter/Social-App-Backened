@@ -120,4 +120,30 @@ const fetchComments = async (req, res) => {
     }
 }
 
-module.exports = { fetchPosts, fetchSinglePost, createPost, updatePost, deletePost, fetchComments };
+const createComment = async (req, res) => {
+    const id=req.params.id;
+    try {
+        const { content } = req.body;
+        if(!content){
+            return res.status(400).json({
+                data:null,
+                message: "Write something to comment",
+            });
+        }
+        const { _id } = req.user;
+        const post = await Post.findById(id);
+        post.comments.push({content, user:_id});
+        await post.save();
+        res.status(201).json({
+            data: post.comments,
+            message: "Comment created successfully",
+        });
+    } catch (error) {
+        res.status(404).json({
+            data:null,
+            message: "Failed to create comment",
+            error: error.message 
+        });
+    }
+}
+module.exports = { fetchPosts, fetchSinglePost, createPost, updatePost, deletePost, fetchComments, createComment };

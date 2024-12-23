@@ -33,6 +33,7 @@ const postSchema = new mongoose.Schema({
         ref:'User'
     }],
     comments:[commentSchema],
+    
 },{ timestamps: true })
 
 const Post = mongoose.model('Post',postSchema);
