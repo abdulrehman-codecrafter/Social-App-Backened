@@ -103,4 +103,21 @@ const deletePost = async (req, res) => {
     }
 }
 
-module.exports = { fetchPosts, fetchSinglePost, createPost, updatePost, deletePost };
+const fetchComments = async (req, res) => {
+    const id=req.params.id;
+    try {
+        const post = await Post.findById(id).populate('comments.user', 'name profilePic _id');
+        res.status(200).json({
+            data: post.comments,
+            message: "Comments fetched successfully",
+        });
+    } catch (error) {
+        res.status(404).json({
+            data:null,
+            message: "Failed to fetch comments",
+            error: error.message 
+        });
+    }
+}
+
+module.exports = { fetchPosts, fetchSinglePost, createPost, updatePost, deletePost, fetchComments };
