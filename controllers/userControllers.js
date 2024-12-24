@@ -125,7 +125,7 @@ const fetchUserProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const { name, profilePic } = req.body;
+        const { name, profilePic,bio } = req.body;
         if (!name) {
             return res.status(400).json({
                 data: null,
@@ -133,9 +133,15 @@ const updateProfile = async (req, res) => {
             });
         }
         const { _id } = req.user
-        const user = await User.findOneAndUpdate({ _id }, { name, profilePic }, { new: true });
+        const user = await User.findOneAndUpdate({ _id }, { name, profilePic,bio }, { new: true });
         res.status(200).json({
-            data: user,
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                profilePic: user.profilePic,
+                bio: user.bio,
+            },
             message: "User updated successfully",
         });
     }
