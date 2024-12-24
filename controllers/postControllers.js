@@ -106,7 +106,7 @@ const deletePost = async (req, res) => {
 const fetchComments = async (req, res) => {
     const id=req.params.id;
     try {
-        const post = await Post.findById(id).populate('comments.user', 'name profilePic _id');
+        const post = await Post.findById(id).populate('comments.user', 'name profilePic _id')
         res.status(200).json({
             data: post.comments,
             message: "Comments fetched successfully",
